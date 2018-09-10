@@ -1,0 +1,11 @@
+---
+
+- import_tasks: Debian.yml
+  when: >
+    'Debian' in groups
+    and inventory_hostname in groups['Debian']
+
+- import_tasks: OpenBSD.yml
+  when: >
+    'OpenBSD' in groups
+    and inventory_hostname in groups['OpenBSD']

@@ -1,0 +1,12 @@
+---
+
+- name: install /etc/installurl file
+  raw: /bin/ksh -c "echo {{ pkg_add_installurl }} > /etc/installurl"
+  changed_when: False
+
+- name: install minimal ansible python libs
+  raw: pkg_add -I python%2.7
+  changed_when: False
+
+- name: force ansible to regather facts
+  setup:

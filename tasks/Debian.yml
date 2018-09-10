@@ -1,0 +1,12 @@
+---
+
+- name: install minimal ansible python libs
+  raw: |
+    apt-get -y -o "APT::Install-Recommends=false" -o "APT::Install-Suggests=false" install python apt-transport-https
+  changed_when: False
+
+- name: force ansible to regather facts
+  setup:
+
+- import_role:
+    name: Debian/pkg_config
