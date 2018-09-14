@@ -7,6 +7,3 @@
 
 - name: force ansible to regather facts
   setup:
-
-- import_role:
-    name: Debian/pkg_config
