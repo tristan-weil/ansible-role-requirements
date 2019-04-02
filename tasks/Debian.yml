@@ -1,8 +1,10 @@
 ---
 
 - name: install minimal ansible python libs
+#  raw: |
+#    apt-get -y -o "APT::Install-Recommends=false" -o "APT::Install-Suggests=false" install apt-transport-https python3-openssl python3-ndg-httpsclient python3-pyasn1
   raw: |
-    apt-get -y -o "APT::Install-Recommends=false" -o "APT::Install-Suggests=false" install python apt-transport-https
+    apt-get -y -o "APT::Install-Recommends=false" -o "APT::Install-Suggests=false" install apt-transport-https python-openssl python-ndg-httpsclient python-pyasn1
   changed_when: False
 
 - name: force ansible to regather facts
