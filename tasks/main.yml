@@ -1,11 +1,28 @@
 ---
 
-- import_tasks: Debian.yml
-  when: >
-    'Debian' in groups
-    and inventory_hostname in groups['Debian']
+- include_tasks: "pkg_{{ ansible_facts['distribution'] }}"
 
-- import_tasks: OpenBSD.yml
-  when: >
-    'OpenBSD' in groups
-    and inventory_hostname in groups['OpenBSD']
+- name: force ansible to regather facts
+  setup:
+
+- name: create ssh-access group
+  group:
+    name: ssh-access
+    system: True
+
+- name: create ansible user
+  user:
+    name: ansible
+    home: /home/ansible
+    system: True
+    groups:
+      - ssh-access
+    append: True
+
+- name: add ssh authorized keys
+  authorized_key:
+    user: ansible
+    key: "{{ item }}"
+  loop: "{{ requirements_ansible_ssh_authorized_keys }}"
+
+- include_tasks: "sudo_{{ ansible_facts['distribution'] }}"
