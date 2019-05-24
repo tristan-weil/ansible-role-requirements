@@ -1,6 +1,17 @@
 ---
 
-- include_tasks: "pkg_{{ ansible_facts['distribution'] }}"
+# We probably don't know yet what the server is.
+# So we must use a 'group' to determine it.
+
+- import_tasks: pkg_Debian.yml
+  when: >
+    'Debian' in groups
+    and inventory_hostname in groups['Debian']
+
+- import_tasks: pkg_OpenBSD.yml
+  when: >
+    'OpenBSD' in groups
+    and inventory_hostname in groups['OpenBSD']
 
 - name: force ansible to regather facts
   setup:
@@ -22,7 +33,22 @@
 - name: add ssh authorized keys
   authorized_key:
     user: ansible
-    key: "{{ item }}"
+    key: "{{ item.key }}"
+    key_options: "{{ item.key_options | default(omit) }}"
+    exclusive: False
   loop: "{{ requirements_ansible_ssh_authorized_keys }}"
 
-- include_tasks: "sudo_{{ ansible_facts['distribution'] }}"
+- name: install ansible system-wide
+  pip:
+    name: "ansible{% if requirements_ansible_version is defined %}=={{ requirements_ansible_version }}{% endif %}"
+    executable: pip3
+
+- import_tasks: sudo_Debian.yml
+  when: >
+    'Debian' in groups
+    and inventory_hostname in groups['Debian']
+
+- import_tasks: sudo_OpenBSD.yml
+  when: >
+    'OpenBSD' in groups
+    and inventory_hostname in groups['OpenBSD']
