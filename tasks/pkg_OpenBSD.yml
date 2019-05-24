@@ -5,8 +5,8 @@
   changed_when: False
 
 - name: install minimal ansible python libs
-#  raw: |
-#    pkg_add -I python%3.6 py3-openssl py3-ndg-httpsclient py3-pyasn1
   raw: |
-    pkg_add -I python%2.7 py-openssl py-ndg-httpsclient py-pyasn1
+    pkg_add -I python%3.6 py3-openssl py3-ndg-httpsclient py3-pyasn1 py-pip
+#  raw: |
+#    pkg_add -I python%2.7 py-openssl py-ndg-httpsclient py-pyasn1 py-pip
   changed_when: False
