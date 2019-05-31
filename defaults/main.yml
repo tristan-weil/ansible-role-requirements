@@ -1,4 +1,4 @@
 ---
 
 requirements_ansible_ssh_authorized_keys: []
-# requirements_ansible_version:
+requirements_ansible_version: 2.7.10
