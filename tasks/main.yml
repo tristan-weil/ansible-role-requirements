@@ -38,11 +38,6 @@
     exclusive: False
   loop: "{{ requirements_ansible_ssh_authorized_keys }}"
 
-- name: install ansible system-wide
-  pip:
-    name: "ansible{% if requirements_ansible_version is defined %}=={{ requirements_ansible_version }}{% endif %}"
-    executable: pip3
-
 - import_tasks: sudo_Debian.yml
   when: >
     'Debian' in groups
