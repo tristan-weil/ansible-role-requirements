@@ -15,4 +15,4 @@
       - from: ansible
         as: ALL
         nopasswd: True
-        commands: ALL
+        commands: ["ALL"]
