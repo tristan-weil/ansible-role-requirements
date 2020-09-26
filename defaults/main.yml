@@ -1,3 +1,9 @@
 ---
 
+requirements_packages:
+  Debian: []
+  OpenBSD: []
+
 requirements_ansible_ssh_authorized_keys: []
+
+requirements_ansible_home: '/home/ansible'

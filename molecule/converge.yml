@@ -1,0 +1,12 @@
+---
+
+- hosts: all
+  name: 'Converge'
+  become: True
+
+  tasks:
+    - import_role:
+        name: 'ansible-role-requirements'
+      vars:
+        requirements_ansible_ssh_authorized_keys:
+          - key: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIESOUCQXCsRXgiVZAqaKpLv+RBuH8lSFxJfocKROX1Z/ test@local'

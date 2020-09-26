@@ -1,0 +1,35 @@
+---
+
+##############################################################################
+# Distributions' dictionaries
+##############################################################################
+_requirements_default_packages_by_os_family:
+  Debian:
+    - aptitude
+    - apt-transport-https
+    - ca-certificates
+    - dnsutils
+    - git
+    - gpg
+    - gpg-agent
+    - python3-apt
+    - python3-openssl
+    - python3-ndg-httpsclient
+    - python3-pyasn1
+    - python3-pip
+    - python3-selinux
+    - python3-setuptools
+    - python3-virtualenv
+    - sudo
+    - virtualenv
+
+  OpenBSD:
+    - git
+    - gnupg2
+    - python%3.7
+    - py3-openssl
+    - py3-ndg-httpsclient
+    - py3-pyasn1
+    - py3-pip
+    - py3-setuptools
+    - py3-virtualenv

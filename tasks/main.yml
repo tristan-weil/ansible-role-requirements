@@ -1,49 +1,58 @@
 ---
 
-# We probably don't know yet what the server is.
-# So we must use a 'group' to determine it.
+#
+# we don't need facts
+#
+- name: 'install minimal ansible python libs'
+  raw: |
+    if [ $(uname) = "Linux" ]; then
+      if [ -f /etc/debian_version ]; then
+        apt-get -y update && apt-get -y \
+          -o "APT::Install-Recommends=false" \
+          -o "APT::Install-Suggests=false" \
+          install {{ _requirements_default_packages_by_os_family['Debian'] | union(requirements_packages['Debian']) | join(' ') }}
+      fi
+    elif [ $(uname) = "OpenBSD" ]; then
+      pkg_add -I {{ _requirements_default_packages_by_os_family['OpenBSD'] | union(requirements_packages['OpenBSD']) | join(' ') }}
+      ln -sf /usr/local/bin/python3 /usr/local/bin/python
+      ln -sf /usr/local/bin/python3 /usr/local/bin/python2
+      ln -sf /usr/local/bin/python3-config /usr/local/bin/python-config
+      ln -sf /usr/local/bin/python3-config /usr/local/bin/python2-config
+    fi
+  changed_when: False
 
-- import_tasks: pkg_Debian.yml
-  when: >
-    'Debian' in groups
-    and inventory_hostname in groups['Debian']
-
-- import_tasks: pkg_OpenBSD.yml
-  when: >
-    'OpenBSD' in groups
-    and inventory_hostname in groups['OpenBSD']
-
-- name: force ansible to regather facts
+#
+# we need facts now
+#
+- name: 'force ansible to regather facts'
   setup:
 
-- name: create ssh-access group
-  group:
-    name: ssh-access
-    system: True
+#
+# create ansible user
+#
+- block:
+    - name: 'create ansible user'
+      user:
+        name: 'ansible'
+        home: "{{ requirements_ansible_home }}"
+        system: True
 
-- name: create ansible user
-  user:
-    name: ansible
-    home: /home/ansible
-    system: True
-    groups:
-      - ssh-access
-    append: True
+    - name: 'add ssh authorized keys'
+      authorized_key:
+        user: 'ansible'
+        key: "{{ item.key }}"
+        key_options: "{{ item.key_options | default(omit) }}"
+        exclusive: False
+      loop: "{{ requirements_ansible_ssh_authorized_keys | default([]) }}"
 
-- name: add ssh authorized keys
-  authorized_key:
-    user: ansible
-    key: "{{ item.key }}"
-    key_options: "{{ item.key_options | default(omit) }}"
-    exclusive: False
-  loop: "{{ requirements_ansible_ssh_authorized_keys }}"
+    - import_role:
+        name: 'ansible-role-privesc'
+      vars:
+        privesc_configs_list:
+          - name: 'ansible'
+            state: 'present'
+            rules:
+              - from: 'ansible'
+                nopasswd: True
 
-- import_tasks: sudo_Debian.yml
-  when: >
-    'Debian' in groups
-    and inventory_hostname in groups['Debian']
-
-- import_tasks: sudo_OpenBSD.yml
-  when: >
-    'OpenBSD' in groups
-    and inventory_hostname in groups['OpenBSD']
+  when: requirements_ansible_ssh_authorized_keys | default([]) | length > 0

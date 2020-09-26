@@ -1,39 +1,47 @@
 # Ansible Role: requirements
 
-An Ansible Role that installs python without any Ansible modules (except `raw`) on Debian and OpenBSD.
+An Ansible Role that installs some requirements to use Ansible:
+
+- python packages
+- `ansible` user
+
+[![Actions Status](https://github.com/tristan-weil/ansible-role-requirements/workflows/molecule/badge.svg?branch=master)](https://github.com/tristan-weil/ansible-role-requirements/actions)
 
 ## Role Variables
 
-None.
+Available variables are listed below, (see also `defaults/main.yml`).
 
-## Dependencies
+Mandatory variables:
 
-None.
+| Variable      | Description |
+| :------------ | :---------- |
+
+Optional variables:
+
+| Variable      | Default | Description |
+| :------------ | :------ | :---------- |
+| requirements_ansible_ssh_authorized_keys | [] | a list of SSH public keys allowed to connect as `ansible` |
+| requirements_packages | [] | a dictionary of packages to install (the key is the distribution) |
+| requirements_ansible_home | /home/ansible | the home directory of the ansible user |
 
 ## Example Playbook
 
-    - hosts: webservers
+    - hosts: 'webservers'
       roles:
-        - role: t18s.fr_requirements
+        - role: 'ansible-role-requirements'
         
 ## Todo
 
 None.
 
+## Dependencies
+
+See [requirements_galaxy.yml](https://github.com/tristan-weil/ansible-role-requirements/blob/master/requirements_galaxy.yml)
+
+## Supported platforms
+
+See [meta/main.yml](https://github.com/tristan-weil/ansible-role-requirements/blob/master/meta/main.yml)
+
 ## License
 
-```
-Copyright (c) 2018, 2019 Tristan Weil <titou@lab.t18s.fr>
-
-Permission to use, copy, modify, and distribute this software for any
-purpose with or without fee is hereby granted, provided that the above
-copyright notice and this permission notice appear in all copies.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
-ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
-ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
-OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-```
+See [LICENSE.md](https://github.com/tristan-weil/ansible-role-requirements/blob/master/LICENSE.md)

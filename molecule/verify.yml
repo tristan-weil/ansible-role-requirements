@@ -1,0 +1,31 @@
+---
+
+- hosts: all
+  name: 'Verify'
+  become: True
+  gather_facts: True
+
+  tasks:
+    - block:
+        - name: 'Exec cmd1'
+          shell: |
+            su -s /bin/ksh ansible -c 'doas /usr/bin/whoami'
+          register: _verify_cmd1
+
+        - name: 'Check commands'
+          assert:
+            that:
+              - _verify_cmd1.stdout == 'root'
+      when: ansible_facts['os_family'] == 'OpenBSD'
+
+    - block:
+        - name: 'Exec cmd1'
+          shell: |
+            su -s /bin/bash ansible -c 'sudo /usr/bin/whoami'
+          register: _verify_cmd1
+
+        - name: 'Check commands'
+          assert:
+            that:
+              - _verify_cmd1.stdout == 'root'
+      when: ansible_facts['os_family'] == 'Debian'
