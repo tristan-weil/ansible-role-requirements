@@ -44,4 +44,4 @@ See [meta/main.yml](https://github.com/tristan-weil/ansible-role-requirements/bl
 
 ## License
 
-See [LICENSE.md](https://github.com/tristan-weil/ansible-role-requirements/blob/master/LICENSE.md)
+See [LICENSE.md](LICENSE.md)
